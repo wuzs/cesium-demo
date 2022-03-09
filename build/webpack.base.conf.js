@@ -8,6 +8,7 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+const cesiumSource='../node_modules/cesium/Source'
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
@@ -27,20 +28,24 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
+    sourcePrefix:' ',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
+
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      "cesium":path.resolve(__dirname, cesiumSource)
     }
   },
   module: {
+    unknownContextCritical: false,
     rules: [
-      ...(config.dev.useEslint ? [createLintingRule()] : []),
+     // ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
         loader: 'vue-loader',
