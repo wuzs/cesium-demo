@@ -49,6 +49,11 @@
       })
 
       //viewer.imageryLayers.addImageryProvider()
+    },
+    methods:{
+      addTilesLayer(){
+          //let tilesLayer = new Ceisum.
+      }
     }
 
 
