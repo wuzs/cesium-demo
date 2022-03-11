@@ -68,12 +68,34 @@
       loadGeoJson(){
 
         let geoPromise= Cesium.GeoJsonDataSource.load(require('@/data/fukang.json'),{
-          clampToGround : true
+          clampToGround : true,
+          stroke: Cesium.Color.RED,
+          fill: Cesium.Color.PINK,
+          strokeWidth: 3,
+          markerSymbol: '?'
         })
 
         geoPromise.then(dataSource=>{
           this.viewer.dataSources.add(dataSource);
           this.viewer.flyTo(dataSource)
+
+           let entities = dataSource.entities.values;
+                              for (let i = 0; i < entities.length; i++) {
+                                  let entity = entities[i];
+                                  // entity.polygon.material = new Cesium.PolylineOutlineMaterialProperty({
+                                  //     color: Cesium.Color.WHITE,
+                                  //     outlineWidth: 2,
+                                  //     outlineColor: Cesium.Color.BLACK
+                                  // });
+    //Cesium.Color.RED.withAlpha(0)
+                                  entity.polygon.fill = false
+                                  entity.polygon.outline = true
+                                  entity.polygon.outlineColor=Cesium.Color.RED
+                                  entity.polygon.width =100
+                                  entity.polygon.index=1000
+
+                              }
+
         })
 
         // this.viewer.dataSources.add(Cesium.GeoJsonDataSource.load(require('@/data/fukang.json'),{
