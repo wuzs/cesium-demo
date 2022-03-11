@@ -51,6 +51,8 @@
       this.addTilesLayer()
 
       //viewer.imageryLayers.addImageryProvider()
+
+      this.loadGeoJson()
     },
     methods:{
       addTilesLayer(){
@@ -59,8 +61,24 @@
           })
           this.viewer.scene.primitives.add(tilesLayer)
 
-          this.viewer.flyTo(tilesLayer, {
-          });
+          // this.viewer.flyTo(tilesLayer, {
+          // });
+
+      },
+      loadGeoJson(){
+
+        let geoPromise= Cesium.GeoJsonDataSource.load(require('@/data/fukang.json'),{
+          clampToGround : true
+        })
+
+        geoPromise.then(dataSource=>{
+          this.viewer.dataSources.add(dataSource);
+          this.viewer.flyTo(dataSource)
+        })
+
+        // this.viewer.dataSources.add(Cesium.GeoJsonDataSource.load(require('@/data/fukang.json'),{
+        //   clampToGround : true
+        // }))
 
       }
     }
