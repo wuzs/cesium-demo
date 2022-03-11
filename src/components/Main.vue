@@ -48,11 +48,20 @@
         terrainProvider: null
       })
 
+      this.addTilesLayer()
+
       //viewer.imageryLayers.addImageryProvider()
     },
     methods:{
       addTilesLayer(){
-          //let tilesLayer = new Ceisum.
+          let tilesLayer = new Cesium.Cesium3DTileset({
+            url:'http://39.105.197.110/qg/tileset.json'
+          })
+          this.viewer.scene.primitives.add(tilesLayer)
+
+          this.viewer.flyTo(tilesLayer, {
+          });
+
       }
     }
 
