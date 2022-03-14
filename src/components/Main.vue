@@ -9,8 +9,8 @@
 <script>
 
   import 'cesium/Widgets/widgets.css'
-  import * as Cesium from 'cesium/Cesium.js'
-  import url from '../assets/bluemarble-2048.png'
+  // import * as Cesium from 'cesium/Cesium.js'
+  //import url from '../assets/bluemarble-2048.png'
   export default{
     name:"Main",
     data(){
@@ -42,7 +42,7 @@
         //creditContainer: opt.creditContainer,
 
         imageryProvider: new Cesium.SingleTileImageryProvider({
-          url:require('../assets/bluemarble-2048.png')
+          url:'../../static/image/bluemarble-2048.png'
         }),
 
         terrainProvider: null
