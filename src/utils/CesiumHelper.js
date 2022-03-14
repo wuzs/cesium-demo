@@ -29,6 +29,20 @@ export class CesiumHelper{
 
   }
 
+  static addDataSource(opt){
+    switch (opt.type) {
+      case 'wms':
+        break;
+      case 'wmts':
+        break;
+      case 'tileset':
+        break;
+
+
+    }
+
+  }
+
 
 }
 
