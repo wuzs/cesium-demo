@@ -1,5 +1,3 @@
-
-
 let _cfg;
 let _viewer;
 export class CesiumHelper{
