@@ -23,13 +23,41 @@ export class CesiumHelper{
    * @param target
    * @param option
    */
-  static initMap(target, option){
+  static initMap(container, option){
+
+    let viewer = new Cesium.Viewer(container,option)
+    CesiumHelper.viewer = viewer;
 
   }
-
-  static addDataSource(opt){
+  /**
+   * 创建图层
+   * @param {Object} opt 参数
+   */
+  static createDataSource(opt){
     switch (opt.type) {
       case 'wms':
+        return new Cesium.WebMapServiceImageryProvider({
+          url:opt.url,
+          layers:opt.layers,
+          parameters:{
+            service : 'WMS',
+            version : '1.1.1',
+            request : 'GetMap',
+            styles : '',
+            format : 'image/jpeg'
+          },
+          getFeatureInfoFormats:{
+            service : 'WMS',
+            version : '1.1.1',
+            request : 'GetFeatureInfo'
+          },
+          enablePickFeatures:opt.enablePickFeatures,
+          
+
+
+
+        })
+
         break;
       case 'wmts':
         break;
@@ -42,6 +70,6 @@ export class CesiumHelper{
   }
 
 
+
+
 }
-
-
