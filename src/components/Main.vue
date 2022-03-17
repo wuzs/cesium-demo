@@ -58,6 +58,49 @@
       //viewer.imageryLayers.addImageryProvider()
 
       this.loadGeoJson()
+
+
+     let  entities = this.viewer.entities.add({
+                name : '风机设备',
+        		    code:"123456789",
+
+        		    position : Cesium.Cartesian3.fromDegrees( 108.953726,34.265776 ),
+        		    // point : { //点
+        		    //     pixelSize : 5,
+        		    //    // color : Cesium.Color.RED,
+        		    //     //outlineColor : Cesium.Color.WHITE,
+        		    //     //outlineWidth : 2
+        		    // },
+        		    label : { //文字标签
+        		        text : '风机设备',
+        		        font : '14pt monospace',
+        		        style : Cesium.LabelStyle.FILL,
+        		        outlineWidth : 2,
+        		        verticalOrigin : Cesium.VerticalOrigin.BOTTOM, //垂直方向以底部来计算标签的位置
+        		        pixelOffset : new Cesium.Cartesian2( 0, -9 )   //偏移量
+        		    },
+        		    billboard : { //图标
+        		        image  : '../../static/image/logo.png',
+        		        width : 16,
+        		        height : 16
+        		    }
+
+
+      })
+
+      this.viewer.zoomTo(entities)
+
+       var handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+              handler.setInputAction((click)=> {
+                  var pick = this.viewer.scene.pick(click.position);
+                  debugger
+                  //选中某模型   pick选中的对象
+                  if(pick && pick.id && pick.id instanceof Cesium.Entity){
+                  	alert(pick.id._code);
+                  }
+
+               }, Cesium.ScreenSpaceEventType.LEFT_CLICK  );
+
     },
     methods:{
       addTilesLayer(){
@@ -82,7 +125,7 @@
 
         geoPromise.then(dataSource=>{
           this.viewer.dataSources.add(dataSource);
-          this.viewer.flyTo(dataSource)
+          //this.viewer.flyTo(dataSource)
 
            let entities = dataSource.entities.values;
                               for (let i = 0; i < entities.length; i++) {
