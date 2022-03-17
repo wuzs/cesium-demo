@@ -41,18 +41,20 @@ export class CesiumHelper{
           layers:opt.layers,
           parameters:{
             service : 'WMS',
-            version : '1.1.1',
+            version : opt.version || '1.1.1',
             request : 'GetMap',
             styles : '',
-            format : 'image/jpeg'
+            format : opt.format || 'image/jpeg'
           },
           getFeatureInfoFormats:{
             service : 'WMS',
-            version : '1.1.1',
+            version : opt.version || '1.1.1',
             request : 'GetFeatureInfo'
           },
           enablePickFeatures:opt.enablePickFeatures,
-          
+
+
+
 
 
 
