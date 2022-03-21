@@ -1,6 +1,9 @@
 <template>
     <div class="main">
-        <div id="cesiumContainer"></div>
+        <div id="cesiumContainer">
+
+           <div id="creditContainer" style="display: none"></div>
+        </div>
 
 
     </div>
@@ -40,11 +43,11 @@
          sceneMode: Cesium.SceneMode.SCENE3D, //初始场景模式
          sceneModePicker: false, //是否显示3D/2D选择器
          scene3DOnly: true, //如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
-         //creditContainer: opt.creditContainer,
-
-         imageryProvider: new Cesium.SingleTileImageryProvider({
-           url:'../../static/image/bluemarble-2048.png'
-         }),
+         creditContainer: "creditContainer",
+        // imageryProvider:CesiumHelper.createTdtWMTSImageLayer('d1d40a60f96a41d1cca975521ac45aed'),
+         // imageryProvider: new Cesium.SingleTileImageryProvider({
+         //   url:'../../static/image/bluemarble-2048.png'
+         // }),
 
          terrainProvider: null
        }
@@ -52,6 +55,9 @@
 
        CesiumHelper.initMap("cesiumContainer",option)
        this.viewer = CesiumHelper.viewer;
+       CesiumHelper.addTdtWMTSImageLayer('d1d40a60f96a41d1cca975521ac45aed',this.viewer)
+
+       // this.viewer.imageryLayers.add
 
       this.addTilesLayer()
 
@@ -90,16 +96,16 @@
 
       this.viewer.zoomTo(entities)
 
-       var handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
-              handler.setInputAction((click)=> {
-                  var pick = this.viewer.scene.pick(click.position);
-                  debugger
-                  //选中某模型   pick选中的对象
-                  if(pick && pick.id && pick.id instanceof Cesium.Entity){
-                  	alert(pick.id._code);
-                  }
+       // var handler = new Cesium.ScreenSpaceEventHandler(this.viewer.scene.canvas);
+       //        handler.setInputAction((click)=> {
+       //            var pick = this.viewer.scene.pick(click.position);
+       //            debugger
+       //            //选中某模型   pick选中的对象
+       //            if(pick && pick.id && pick.id instanceof Cesium.Entity){
+       //            	alert(pick.id._code);
+       //            }
 
-               }, Cesium.ScreenSpaceEventType.LEFT_CLICK  );
+       //         }, Cesium.ScreenSpaceEventType.LEFT_CLICK  );
 
     },
     methods:{

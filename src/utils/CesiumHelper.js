@@ -52,18 +52,26 @@ export class CesiumHelper{
             request : 'GetFeatureInfo'
           },
           enablePickFeatures:opt.enablePickFeatures,
-
-
-
-
-
-
         })
 
         break;
       case 'wmts':
+        return new Cesium.WebMapTileServiceImageryProvider({
+          url:opt.url,
+          layer:opt.layer,
+          style:opt.style ||'default',
+          format:opt.format|| 'tiles',
+          tileMatrixSetID:opt.tileMatrixSetID,
+          credit:opt.credit || '',
+          subdomains:opt.subdomains ||[],
+          minimumLevel:opt.minimumLevel||0,
+          maximumLevel:opt.maximumLevel|| 18
+        })
         break;
       case 'tileset':
+       return new Cesium.Cesium3DTileset({
+          url:'http://39.105.197.110/qg/tileset.json'
+        })
         break;
 
 
@@ -72,6 +80,29 @@ export class CesiumHelper{
   }
 
 
+  /**
+   * 创建天地图影像地图
+   * @param {Object} tk
+   */
+  static addTdtWMTSImageLayer =function(tk,viewer){
+
+    const img_w={
+      type:"wmts",
+      url:`http://{s}.tianditu.com/img_w/wmts?tk=${tk}`,
+      layer:'img',
+      tileMatrixSetID:"w",
+      subdomains:["t0", "t1","t2","t3", "t4", "t5", "t6", "t7"]
+    }
+    const cia_w={
+      type:"wmts",
+      url:`http://{s}.tianditu.com/cia_w/wmts?tk=${tk}`,
+      layer:'cia',
+      tileMatrixSetID:"w",
+      subdomains:["t0", "t1","t2","t3", "t4", "t5", "t6", "t7"]
+    }
+    viewer.imageryLayers.addImageryProvider(CesiumHelper.createDataSource(img_w))
+    viewer.imageryLayers.addImageryProvider(CesiumHelper.createDataSource(cia_w))
+  }
 
 
 }
