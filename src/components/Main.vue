@@ -1,9 +1,10 @@
 <template>
     <div class="main">
         <div id="cesiumContainer">
-
            <div id="creditContainer" style="display: none"></div>
         </div>
+
+        <Operate></Operate>
 
 
     </div>
@@ -13,10 +14,12 @@
 
   import 'cesium/Widgets/widgets.css'
   import {CesiumHelper}  from '@/utils/CesiumHelper'
+  import Operate from '@/components/Operate'
   // import * as Cesium from 'cesium/Cesium.js'
   //import url from '../assets/bluemarble-2048.png'
   export default{
     name:"Main",
+    components:{Operate},
     data(){
       return {
         viewer:undefined
