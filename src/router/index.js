@@ -1,6 +1,6 @@
 import Vue from "vue"
 import VueRouter from 'vue-router'
-import Main from '@/components/Main'
+import HellWorld from '@/components/01cesium入门/HelloWorld.vue'
 
 
 Vue.use(VueRouter)
@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 const routers=[
     {
       path:"/",
-      component:Main
+      component:HellWorld
     }
 
 ]
