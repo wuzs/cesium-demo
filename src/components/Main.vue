@@ -150,6 +150,11 @@
                                   entity.polygon.outlineColor=Cesium.Color.RED
                                   entity.polygon.width =100
                                   entity.polygon.index=1000
+                                  entity.polyline = {
+                                    positions: entity.polygon.hierarchy._value.positions,
+                                    width: entity.polygon.outlineWidth,
+                                    material: Cesium.Color.YELLOW
+                                  }
 
                               }
 
