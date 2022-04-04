@@ -1,6 +1,6 @@
 import Vue from "vue"
 import VueRouter from 'vue-router'
-import HellWorld from '@/components/01cesium入门/HelloWorld.vue'
+import HellWorld from '@/components/02Cesium/01Point.vue'
 
 
 Vue.use(VueRouter)
