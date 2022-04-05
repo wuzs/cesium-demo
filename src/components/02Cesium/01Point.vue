@@ -24,7 +24,10 @@ export default {
     //this.addBox()
     //this.addCorridor()
     //this.addCylinder()
-    this.addEllipse()
+    //this.addEllipse()
+   // this.addEllipsoid();
+    //this.addLabel()
+    this.addModel()
   },
   methods:{
     initCesium(){
@@ -197,6 +200,96 @@ export default {
           stRotation:Cesium.Math.toRadians(90),
         }
       })
+    },
+    addEllipsoid(){
+      this.viewer.entities.add({
+        name:"Blue sphere",
+        position:Cesium.Cartesian3.fromDegrees(-114,40,300000),
+        ellipsoid:{
+          radii:new Cesium.Cartesian3(200000,200000,300000),//用于指定椭球的半径，三个方向半径不相等就是椭球体
+          material:Cesium.Color.BLUE
+        }
+      });
+      this.viewer.entities.add({
+        name:'Red sphere',
+        position:Cesium.Cartesian3.fromDegrees(-107,40,300000),
+        ellipsoid:{
+          radii:new Cesium.Cartesian3(300000.0, 300000.0, 300000.0),//用于指定椭球的半径 三个半径相等 球体
+          material:Cesium.Color.RED.withAlpha(0.5),
+          innerRadii:new Cesium.Cartesian3(100000.0, 100000.0, 100000.0)
+        }
+      });
+      this.viewer.entities.add({
+        name: "Yellow ellipsoid",
+        position: Cesium.Cartesian3.fromDegrees(-100.0, 40.0, 300000.0),
+        ellipsoid: {
+          radii: new Cesium.Cartesian3(200000.0, 200000.0, 300000.0),
+          fill: false,
+          outline: true,
+          outlineColor: Cesium.Color.YELLOW,
+          slicePartitions: 64,//指定径向切片数量 水平
+          stackPartitions: 64,//指定堆栈数 垂直
+          subdivisions:256,//指定每个轮廓环的样本数，确定曲率的粒度
+        },
+      })
+    },
+    addLabel(){
+      this.viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(-107.0, 40.0, 300.0),
+        point: {
+          color: Cesium.Color.RED,    //点位颜色
+          pixelSize: 10                //像素点大小
+        },
+        label:{
+          pixelOffset:new Cesium.Cartesian2(155, -97), //偏移量
+          text : 'Hello Cesium\nLabelGraphics',//文本内容，\n标识换行
+          font : '14pt Source Han Sans CN',    //字体样式
+          fillColor:Cesium.Color.BLACK,        //字体颜色
+          backgroundColor:Cesium.Color.RED,    //背景颜色
+          showBackground:true,                //是否显示背景颜色
+          style: Cesium.LabelStyle.FILL, //label样式
+          outlineWidth : 2,
+          verticalOrigin : Cesium.VerticalOrigin.CENTER,//垂直位置
+          horizontalOrigin :Cesium.HorizontalOrigin.LEFT,//水平位置
+          pixelOffset:new Cesium.Cartesian2(10,0)            //偏移
+        }
+      })
+    },
+    addModel(){
+
+      let position = Cesium.Cartesian3.fromDegrees(
+        -123.0744619,
+        44.0503706,
+        10000
+      )
+      let heading = Cesium.Math.toRadians(135);
+      let pitch=0;
+      let roll =0;
+      let hpr = new Cesium.HeadingPitchRoll(heading,pitch,roll);
+      let orientation =  Cesium.Transforms.headingPitchRollQuaternion(position,hpr);
+
+      let entity = this.viewer.entities.add({
+        name:"model",
+        position:position,
+        orientation:orientation,
+        model:{
+          uri:"http://39.105.197.110/Cesium1.91/Apps/SampleData/models/CesiumAir/Cesium_Air.glb",
+          scale:5,//缩放
+          minimumPixelSize:32,//指定模型最小的像素大小，不考虑缩放
+          maximumSize:128,//指定的最大比例尺大小，
+          runAnimations:true,//指定是否应启动模型中指定的glTF动画
+          clampAnimations:true,//指定glTF动画是否应在没有关键帧的持续时间内保持最后一个姿势
+          silhouetteSize:3,//轮廓大小
+          maximumScale:200,//设置模型最大的放大大小
+          color:Cesium.Color.YELLOWGREEN,//指定模型渲染混合的颜色
+          show:true,
+          colorBlendMode:Cesium.ColorBlendMode.MIX,//颜色混合模式
+          colorBlendAmount:0.6,//颜色混合比例
+
+        }
+      })
+      this.viewer.trackedEntity =entity
+
 
 
     }
