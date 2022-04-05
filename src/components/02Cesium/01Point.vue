@@ -8,6 +8,7 @@
   import * as Cesium from 'cesium/Cesium';
   import billborad from './images/billboard.png'
   import 'cesium/Widgets/widgets.css'
+  import ellipse from './images/ellipse.jpg'
 export default {
   name: 'HelloWorld',
   data () {
@@ -22,7 +23,8 @@ export default {
     //this.addBillboard()
     //this.addBox()
     //this.addCorridor()
-    this.addCylinder()
+    //this.addCylinder()
+    this.addEllipse()
   },
   methods:{
     initCesium(){
@@ -169,7 +171,36 @@ export default {
         }
       })
       this.viewer.trackedEntity = entity
+    },
+    addEllipse(){
+      this.viewer.entities.add({
+        position:Cesium.Cartesian3.fromDegrees(-111.0, 40.0, 150000.0),
+        name:"ellipse",
+        ellipse:{
+          semiMinorAxis:300000.0,
+          semiMajorAxis:300000.0,
+          height:200000.0,
+          material:Cesium.Color.BLUE,
+          rotation:Cesium.Math.PI_OVER_FOUR
+        }
+      })
+
+      this.viewer.entities.add({
+        position:Cesium.Cartesian3.fromDegrees(-100.0,40,150000),
+        name:'ellipse',
+        ellipse:{
+          semiMinorAxis: 200000.0,
+          semiMajorAxis: 300000.0,
+          height:200000.0,
+          material:ellipse,
+          rotation:Cesium.Math.toRadians(90),
+          stRotation:Cesium.Math.toRadians(90),
+        }
+      })
+
+
     }
+
   }
 
 
