@@ -33,7 +33,9 @@ export default {
     // this.addPolygon()
     // this.addPolyline()
     // this.addPolylineVolume()
-    this.addRectangle()
+    // this.addRectangle()
+    // this.addWall()
+    this.addEntityCluster()
   },
   methods: {
     initCesium () {
@@ -487,6 +489,118 @@ export default {
           material: Cesium.Color.RED.withAlpha(0.5)
         }
       })
+    },
+    addWall () {
+      this.viewer.entities.add({
+        name: 'Blue Wall sawtooth  heights and outline',
+        wall: {
+          positions: Cesium.Cartesian3.fromDegreesArray([
+            -115.0,
+            50.0,
+            -112.5,
+            50.0,
+            -110.0,
+            50.0,
+            -107.5,
+            50.0,
+            -105.0,
+            50.0,
+            -102.5,
+            50.0,
+            -100.0,
+            50.0,
+            -97.5,
+            50.0,
+            -95.0,
+            50.0,
+            -92.5,
+            50.0,
+            -90.0,
+            50.0
+          ]),
+          maximumHeights: [ // 设定每个点的最大高度
+            100000,
+            200000,
+            100000,
+            200000,
+            100000,
+            200000,
+            100000,
+            200000,
+            100000,
+            200000,
+            100000
+          ],
+          minimumHeights: [// 设定每个点的最小高度
+            0,
+            100000,
+            0,
+            100000,
+            0,
+            100000,
+            0,
+            100000,
+            0,
+            100000,
+            0
+          ],
+          material: Cesium.Color.BLUE.withAlpha(0.5),
+          outline: true,
+          outlineColor: Cesium.Color.BLACK
+        }
+
+      })
+    },
+    addEntityCluster () {
+      let customDataSource = new Cesium.CustomDataSource('customDataSource')
+      for (let i = 0; i < 250; i++) {
+        let entity = new Cesium.Entity()
+        entity.position = Cesium.Cartesian3.fromDegrees(Cesium.Math.randomBetween(-180, 180), Cesium.Math.randomBetween(-75, 75))
+        entity.billboard = new Cesium.BillboardGraphics()
+        entity.billboard.image = billborad
+        entity.billboard.color = Cesium.Color.fromRandom().withAlpha(0.8)
+        customDataSource.entities.add(entity)
+      }
+
+      this.viewer.dataSources.add(customDataSource)
+      let dataSource = customDataSource
+      let pixelRange = 5
+      let minimumClusterSize = 3
+      let enabled = true
+      let removeListener = null
+      // 开启数据源实体聚合
+      dataSource.clustering.enabled = enabled
+      // 扩展屏幕空间边框的像素范围
+      dataSource.clustering.pixelRange = pixelRange
+      // 群集的屏幕空间对象的最小数量
+      dataSource.clustering.minimumClusterSize = minimumClusterSize
+
+      function customStyle () {
+        if (Cesium.defined(removeListener)) {
+          removeListener()
+          removeListener = undefined
+        } else {
+          removeListener = dataSource.clustering.clusterEvent.addEventListener(
+            function (clusteredEntities, cluster) {
+              cluster.label.show = true
+              cluster.label.text = clusteredEntities.length.toString()
+              cluster.label.pixelOffset = new Cesium.Cartesian2(-5, 5)
+              cluster.label.font = '18px sans-serif'
+              cluster.label.style = Cesium.LabelStyle.FILL_AND_OUTLINE
+              cluster.label.fillColor = Cesium.Color.RED
+              cluster.label.outlineColor = Cesium.Color.BLACK
+              cluster.label.outlineWidth = 2
+              cluster.billboard.show = true
+              cluster.billboard.id = cluster.label.id
+              cluster.billboard.image = billborad
+            })
+        }
+        // 强制聚合使用新的样式
+        let pixelRange = dataSource.clustering.pixelRange
+        dataSource.clustering.pixelRange = 0
+        dataSource.clustering.pixelRange = pixelRange
+      }
+      customStyle()
     }
 
   }
