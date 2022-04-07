@@ -14,7 +14,8 @@ export default {
   },
   mounted () {
     this.viewer = this.initCesium()
-    this.addBoxGeometry()
+    // this.addBoxGeometry()
+    this.addBoxOutlineGeometry()
   },
   methods: {
     initCesium: function () {
@@ -103,6 +104,33 @@ export default {
         appearance: new Cesium.PerInstanceColorAppearance({
           translucent: false,
           closed: true
+        })
+      })
+      this.viewer.scene.primitives.add(primitive)
+    },
+    addBoxOutlineGeometry () {
+      let box = Cesium.BoxOutlineGeometry.fromDimensions({
+        dimensions: new Cesium.Cartesian3(500000, 500000, 500000)
+      })
+      let geometry = Cesium.BoxOutlineGeometry.createGeometry(box)
+      let boxInstance = new Cesium.GeometryInstance({
+        geometry: geometry,
+        modelMatrix: Cesium.Matrix4.multiplyByTranslation(Cesium.Transforms.eastNorthUpToFixedFrame(Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883)), new Cesium.Cartesian3(0.0, 0.0, 3000000.0), new Cesium.Matrix4()),
+        attributes: {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.BLUE)
+        },
+        id: 'top'
+      })
+
+      let primitive = new Cesium.Primitive({
+        geometryInstances: [boxInstance],
+        asynchronous: false,
+        appearance: new Cesium.PerInstanceColorAppearance({
+          translucent: false,
+          flat: true, // 当为true时，片元着色器将使用平面阴影，不考虑光照
+          renderState: {
+            lineWidth: Math.min(4.0, this.viewer.scene.maximumAliasedLineWidth)
+          }
         })
       })
       this.viewer.scene.primitives.add(primitive)
