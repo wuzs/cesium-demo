@@ -30,7 +30,10 @@ export default {
     // this.addPolygonOutlineGeometry()
     // this.addPolylineGeometry()
     // this.addSimplePolylineGeometry()
-    this.addPolylineVolumeGeometry(sssssss)
+    // this.addPolylineVolumeGeometry()
+    // this.addSphereGeometry()
+    // this.addSphereOutlineGeometry()
+    this.addWallGeometry()
   },
   methods: {
     initCesium: function () {
@@ -801,6 +804,110 @@ export default {
           flat: true// 当 true 时，片段着色器中将使用平面阴影，这意味着不考虑光照
         })
       })
+      this.viewer.scene.primitives.add(primitive)
+    },
+    addSphereGeometry () {
+      let sphere = new Cesium.SphereGeometry({
+        radius: 100000.0,
+        vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT
+      })
+      let geometry = Cesium.SphereGeometry.createGeometry(sphere)
+
+      let polygonInstance1 = new Cesium.GeometryInstance({
+        geometry: geometry,
+        modelMatrix: Cesium.Matrix4.multiplyByTranslation(Cesium.Transforms.eastNorthUpToFixedFrame(
+          Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883)), new Cesium.Cartesian3(0.0, 0.0, 10000.0), new Cesium.Matrix4()),
+        attributes: {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.AQUA)
+        },
+        id: 'polygonInstance1'
+      })
+
+      let primitive = new Cesium.Primitive({
+        geometryInstances: [polygonInstance1],
+        asynchronous: false, // 是否采用多线程
+        appearance: new Cesium.PerInstanceColorAppearance({
+          translucent: false, // 半透明
+          flat: true// 当 true 时，片段着色器中将使用平面阴影，这意味着不考虑光照
+        })
+      })
+      this.viewer.scene.primitives.add(primitive)
+    },
+    addSphereOutlineGeometry () {
+      let sphere = new Cesium.SphereOutlineGeometry({
+        radius: 100000.0,
+        stackPartitions: 6,
+        slicePartitions: 5,
+        vertexFormat: Cesium.PerInstanceColorAppearance.VERTEX_FORMAT
+      })
+      let geometry = Cesium.SphereOutlineGeometry.createGeometry(sphere)
+
+      let polygonInstance1 = new Cesium.GeometryInstance({
+        geometry: geometry,
+        modelMatrix: Cesium.Matrix4.multiplyByTranslation(Cesium.Transforms.eastNorthUpToFixedFrame(
+          Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883)), new Cesium.Cartesian3(0.0, 0.0, 10000.0), new Cesium.Matrix4()),
+        attributes: {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.AQUA)
+        },
+        id: 'polygonInstance1'
+      })
+
+      let primitive = new Cesium.Primitive({
+        geometryInstances: [polygonInstance1],
+        asynchronous: false, // 是否采用多线程
+        appearance: new Cesium.PerInstanceColorAppearance({
+          translucent: false, // 半透明
+          flat: true// 当 true 时，片段着色器中将使用平面阴影，这意味着不考虑光照
+        })
+      })
+
+      this.viewer.scene.primitives.add(primitive)
+    },
+    addWallGeometry () {
+      let wall1 = new Cesium.WallGeometry({
+        positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+          -95.0, 50.1, 10000.0,
+          -85.0, 50.1, 10000.0,
+          -75.0, 50.1, 10000.0
+        ])
+      })
+
+      let geometry1 = Cesium.WallGeometry.createGeometry(wall1)
+      let polygonInstance1 = new Cesium.GeometryInstance({
+        geometry: geometry1,
+        attributes: {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.RED)
+        },
+        id: 'polygonInstance1'
+      })
+
+      let wall2 = Cesium.WallGeometry.fromConstantHeights({
+        positions: Cesium.Cartesian3.fromDegreesArray([
+          -95.0, 50.0,
+          -85.0, 50.0,
+          -75.0, 50.0
+        ]),
+        minimumHeight: 20000,
+        maximumHeight: 10000
+      })
+      let geometry2 = Cesium.WallGeometry.createGeometry(wall2)
+      let polygonInstance2 = new Cesium.GeometryInstance({
+        geometry: geometry2,
+        attributes: {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.AQUA)
+        },
+        id: 'polygonInstance2'
+      })
+
+      let primitive = new Cesium.Primitive({
+        geometryInstances: [polygonInstance1, polygonInstance2],
+        asynchronous: false, // 是否采用多线程
+        appearance: new Cesium.PerInstanceColorAppearance({
+          translucent: false, // 半透明
+          flat: true// 当 true 时，片段着色器中将使用平面阴影，这意味着不考虑光照
+        })
+      })
+
       this.viewer.scene.primitives.add(primitive)
     }
 
