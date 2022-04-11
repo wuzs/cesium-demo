@@ -33,7 +33,10 @@ export default {
     // this.addPolylineVolumeGeometry()
     // this.addSphereGeometry()
     // this.addSphereOutlineGeometry()
-    this.addWallGeometry()
+    // this.addWallGeometry()
+    // this.addWallOutlineGeometry()
+    // this.addGroundPrimitive()
+    this.addGroundPolylineGeometry()
   },
   methods: {
     initCesium: function () {
@@ -909,6 +912,124 @@ export default {
       })
 
       this.viewer.scene.primitives.add(primitive)
+    },
+    addWallOutlineGeometry () {
+      let wall1 = new Cesium.WallOutlineGeometry({
+        positions: Cesium.Cartesian3.fromDegreesArrayHeights([
+          -95.0, 50.1, 10000.0,
+          -85.0, 50.1, 10000.0,
+          -75.0, 50.1, 10000.0
+        ])
+      })
+      let geometry1 = Cesium.WallOutlineGeometry.createGeometry(wall1)
+      let polygonInstance1 = new Cesium.GeometryInstance({
+        geometry: geometry1,
+        attributes: {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.RED)
+        },
+        id: 'polygonInstance1'
+      })
+
+      let wall2 = Cesium.WallOutlineGeometry.fromConstantHeights({
+        positions: Cesium.Cartesian3.fromDegreesArray([
+          -95.0, 50.0,
+          -85.0, 50.0,
+          -75.0, 50.0
+        ]),
+        minimumHeight: 20000.0,
+        maximumHeight: 10000.0
+      })
+
+      let geometry2 = Cesium.WallOutlineGeometry.createGeometry(wall2)
+
+      let polygonInstance2 = new Cesium.GeometryInstance({
+        geometry: geometry2,
+        attributes: {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.AQUA)
+        },
+        id: 'polygonInstance2'
+      })
+
+      let primitive = new Cesium.Primitive({
+        geometryInstances: [polygonInstance1, polygonInstance2],
+        asynchronous: false, // 是否采用多线程
+        appearance: new Cesium.PerInstanceColorAppearance({
+          translucent: false, // 半透明
+          flat: true// 当 true 时，片段着色器中将使用平面阴影，这意味着不考虑光照
+        })
+      })
+
+      this.viewer.scene.primitives.add(primitive)
+    },
+    addGroundPrimitive () {
+      let rectangleInstance = new Cesium.GeometryInstance({
+        geometry: new Cesium.RectangleGeometry({
+          rectangle: Cesium.Rectangle.fromDegrees(-140.0, 30.0, -100.0, 40.0)
+        }),
+        id: 'rectangle',
+        attributes: {
+          color: new Cesium.ColorGeometryInstanceAttribute(1.0, 0.0, 0.0, 0.5)
+        }
+
+      })
+      let color = new Cesium.ColorGeometryInstanceAttribute(0.0, 1.0, 1.0, 0.5) // Both instances must have the same color.
+      let ellipseInstance = new Cesium.GeometryInstance({
+        geometry: new Cesium.EllipseGeometry({
+          center: Cesium.Cartesian3.fromDegrees(-115.0, 50.0),
+          semiMinorAxis: 300000.0,
+          semiMajorAxis: 400000.0
+        }),
+        id: 'ellipse',
+        attributes: {
+          color: color
+        }
+      })
+      let groundPrimitive = new Cesium.GroundPrimitive({
+        geometryInstances: [rectangleInstance, ellipseInstance]
+
+      })
+      this.viewer.scene.primitives.add(groundPrimitive)
+      this.viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(-115.0, 50.0, 1000),
+        orientation: {
+          heading: Cesium.Math.toRadians(90),
+          pitch: Cesium.Math.toRadians(-20),
+          roll: 0.0
+        },
+        duration: 3
+
+      })
+    },
+    addGroundPolylineGeometry () {
+      let instance2 = new Cesium.GeometryInstance({
+        geometry: new Cesium.GroundPolylineGeometry({
+          positions: Cesium.Cartesian3.fromDegreesArray([
+            -112.1340164450331, 36.05494287836128,
+            -112.08821010582645, 36.097804071380715,
+            -112.13296079730024, 36.168769146801104]),
+          loop: true,
+          width: 10.0
+        }),
+        attributes: {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromCssColorString('Yellow').withAlpha(1.0))
+        },
+        id: 'object returned when this instance is picked and to get/set per-instance attributes'
+      })
+
+      let groundPolylinePrimitive2 = new Cesium.GroundPolylinePrimitive({
+        geometryInstances: instance2,
+        appearance: new Cesium.PolylineColorAppearance()
+      })
+      this.viewer.scene.primitives.add(groundPolylinePrimitive2)
+      this.viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(-112.1340164450331, 36.05494287836128, 2000),
+        orientation: {// 设置相机的Heading，Pitch，Roll
+          heading: Cesium.Math.toRadians(90.0),
+          pitch: Cesium.Math.toRadians(-40),
+          roll: 0.0
+        },
+        duration: 3
+      })
     }
 
   }
