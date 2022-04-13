@@ -1,6 +1,6 @@
 import Vue from "vue"
 import VueRouter from 'vue-router'
-import HellWorld from '@/components/07Cesium/3DTileset'
+import HellWorld from '@/components/09Cesium/TerrainProvider.vue'
 
 
 Vue.use(VueRouter)
