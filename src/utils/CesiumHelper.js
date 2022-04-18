@@ -1,5 +1,7 @@
+import * as Cesium from 'cesium/Cesium'
 let _cfg;
 let _viewer;
+
 export class CesiumHelper{
 
   //加载配置文件

@@ -4,7 +4,7 @@
            <div id="creditContainer" style="display: none"></div>
         </div>
 
-        <Operate></Operate>
+
 
 
     </div>
@@ -15,8 +15,8 @@
   import 'cesium/Widgets/widgets.css'
   import {CesiumHelper}  from '@/utils/CesiumHelper'
   import Operate from '@/components/Operate'
-  // import * as Cesium from 'cesium/Cesium.js'
-  //import url from '../assets/bluemarble-2048.png'
+  import * as Cesium from 'cesium/Cesium'
+  import url from '../assets/bluemarble-2048.png'
   export default{
     name:"Main",
     components:{Operate},
@@ -26,6 +26,7 @@
       }
     },
     mounted() {
+      var tdtUrl = 'https://t0.tianditu.gov.cn/DataServer?T=elv_c&tk=d1d40a60f96a41d1cca975521ac45aed'
        Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
        let option ={
          animation: false, //是否创建动画小器件，左下角仪表
@@ -52,13 +53,19 @@
          //   url:'../../static/image/bluemarble-2048.png'
          // }),
 
-         terrainProvider: null
+         terrainProvider: new Cesium.CesiumTerrainProvider({
+           url : tdtUrl,
+           requestVertexNormals : true
+         })
        }
 
 
        CesiumHelper.initMap("cesiumContainer",option)
        this.viewer = CesiumHelper.viewer;
+       this.viewer.imageryLayers.removeAll()
        CesiumHelper.addTdtWMTSImageLayer('d1d40a60f96a41d1cca975521ac45aed',this.viewer)
+
+
 
        // this.viewer.imageryLayers.add
 
